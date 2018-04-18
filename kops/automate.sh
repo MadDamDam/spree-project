@@ -23,7 +23,14 @@ do
   kops_state=$(tail -1 /tmp/kops_cluster_state.txt)
 done
 
-echo "Deploying K8s..."
-kubectl create -f k8s/externaldns-rbac-deployment.yaml
-helm init
-kubectl create -f k8s/spree-deployment.yaml
+echo "===Deploying Helm==="
+kubectl create -f helm/helm-rbac-config.yaml
+helm init --service-account tiller
+echo "===Deploying ExternalDNS==="
+#kubectl create -f k8s/externaldns-rbac-deployment.yaml
+helm install --name xdns stable/external-dns -f helm/xdns-values.yaml
+echo "===Deploying ingress controller==="
+helm install --name ingcon stable/nginx-ingress -f helm/nginx-values.yaml
+echo "===Deploying spree==="
+kubectl create -f k8s/spree-deployment-ingcon.yaml
+kubectl create -f k8s/spree-ingress.yaml
