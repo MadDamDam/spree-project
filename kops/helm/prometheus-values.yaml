@@ -1,0 +1,12 @@
+server:
+  ingress:
+    enabled: true
+    hosts:
+      - prometheus.damdam.me
+  persistentVolume:
+    size: 20Gi
+serverFiles:
+  prometheus.yml:
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
