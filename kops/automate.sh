@@ -30,14 +30,14 @@ echo "===Deploying ExternalDNS==="
 helm install stable/external-dns -f helm/xdns-values.yaml --name xdns --namespace spree-route
 
 echo "===Deploying nginx ingress controller==="
-helm install stable/nginx-ingress -f helm/nginx-values.yaml--name ingcon --namespace spree-route
+helm install stable/nginx-ingress -f helm/nginx-values.yaml --name ingcon --namespace spree-route
 
 echo "===Deploying Prometheus==="
 helm install stable/prometheus -f helm/prometheus-values.yaml --name prometheus --namespace spree-monitor
 
 echo "===Deploying Grafana==="
 helm install stable/grafana -f helm/grafana-values.yaml --name grafana --namespace spree-monitor
-grafana_secret=$(kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo)
+grafana_secret=$(kubectl get secret --namespace spree-monitor grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo)
 echo "Grafana initial password is $grafana_secret" | tee spree-grafana-pass.txt
 echo "Password has also been written to spree-grafana-pass.txt"
 

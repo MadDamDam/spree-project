@@ -1,9 +1,18 @@
-persistence:
-  enabled: true
-  size: 10Gi
-  accessModes:
-    - ReadWriteOnce
+apiVersion: 1
 ingress:
   enabled: true
   hosts:
     - grafana.damdam.me
+adminPassword: "123456"
+datasource:
+  - name: Prometheus
+    type: prometheus
+    url: http://prometheus-server
+    access: proxy
+    isDefault: true
+dashboardProviders:
+  - name: 'default'
+    type: file
+    editable: true
+    options:
+      path: ~/Opsschool/spree-project/kops/grafana

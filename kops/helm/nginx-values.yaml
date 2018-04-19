@@ -3,3 +3,7 @@ rbac:
 controller:
   publishService:
     enabled: true
+  stats:
+    enabled: true
+  metrics:
+    enabled: true
