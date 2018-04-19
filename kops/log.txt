@@ -1,0 +1,19 @@
+Validating cluster k8s.damdam.me
+
+INSTANCE GROUPS
+NAME			ROLE	MACHINETYPE	MIN	MAX	SUBNETS
+master-us-east-1a	Master	t2.micro	1	1	us-east-1a
+master-us-east-1b	Master	t2.micro	1	1	us-east-1b
+master-us-east-1c	Master	t2.micro	1	1	us-east-1c
+nodes			Node	t2.medium	3	3	us-east-1a,us-east-1b,us-east-1c
+
+NODE STATUS
+NAME				ROLE	READY
+ip-172-20-115-119.ec2.internal	master	True
+ip-172-20-41-113.ec2.internal	master	True
+ip-172-20-57-35.ec2.internal	node	True
+ip-172-20-66-136.ec2.internal	node	True
+ip-172-20-87-161.ec2.internal	master	True
+ip-172-20-97-109.ec2.internal	node	True
+
+Your cluster k8s.damdam.me is ready

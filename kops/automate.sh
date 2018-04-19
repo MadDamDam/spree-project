@@ -1,26 +1,23 @@
 #!/bin/bash
+
+echo "===Setting enviroment variables==="
 export KOPS_STATE_STORE=s3://damdam-k8s-aws-io
 export KOPS_CLUSTER_NAME=k8s.damdam.me
+echo "Kubernetes cluster name is set to $KOPS_CLUSTER_NAME"
+echo "kubernetes state store is at $KOPS_STATE_STORE"
 
+echo "===Creating kubernetes cluster using Kops==="
+end_message="Your cluster $KOPS_CLUSTER_NAME is ready"
 kops delete cluster --yes
 kops create -f kops-k8s.yaml -v 4
 kops create secret --name k8s.damdam.me sshpublickey admin -i ~/.ssh/kops-aws.pub
 kops update cluster --yes
-
-end_message="Your cluster $KOPS_CLUSTER_NAME is ready"
-
-kops validate cluster > /tmp/kops_cluster_state.txt
-cat /tmp/kops_cluster_state.txt
-kops_state=$(tail -1 /tmp/kops_cluster_state.txt)
-
+kops_state=$(kops validate cluster | tee /dev/tty | tail -1)
 while [ "$kops_state" != "$end_message" ]
 do
   echo "Waiting 30 second before validating again..."
   sleep 30s
-
-  kops validate cluster > /tmp/kops_cluster_state.txt
-  cat /tmp/kops_cluster_state.txt
-  kops_state=$(tail -1 /tmp/kops_cluster_state.txt)
+  kops_state=$(kops validate cluster | tee /dev/tty | tail -1)
 done
 
 echo "===Deploying Helm==="
@@ -28,14 +25,22 @@ kubectl create -f helm/helm-rbac-config.yaml
 helm init --service-account tiller
 echo "Waiting 60 seconds for tiller to deploy"
 sleep 60s
+
 echo "===Deploying ExternalDNS==="
-helm install --name xdns stable/external-dns -f helm/xdns-values.yaml
-echo "===Deploying ingress controller==="
-helm install --name ingcon stable/nginx-ingress -f helm/nginx-values.yaml
+helm install stable/external-dns -f helm/xdns-values.yaml --name xdns --namespace spree-route
+
+echo "===Deploying nginx ingress controller==="
+helm install stable/nginx-ingress -f helm/nginx-values.yaml--name ingcon --namespace spree-route
+
 echo "===Deploying Prometheus==="
-helm install --name prometheus stable/prometheus -f helm/prometheus-values.yaml
+helm install stable/prometheus -f helm/prometheus-values.yaml --name prometheus --namespace spree-monitor
+
 echo "===Deploying Grafana==="
-helm install --name grafana stable/grafana -f helm/grafana-values.yaml
+helm install stable/grafana -f helm/grafana-values.yaml --name grafana --namespace spree-monitor
+grafana_secret=$(kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo)
+echo "Grafana initial password is $grafana_secret" | tee spree-grafana-pass.txt
+echo "Password has also been written to spree-grafana-pass.txt"
+
 echo "===Deploying spree==="
 kubectl create -f k8s/spree-deployment-ingcon.yaml
 kubectl create -f k8s/spree-ingress.yaml
