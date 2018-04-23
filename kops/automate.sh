@@ -6,9 +6,11 @@ export KOPS_CLUSTER_NAME=k8s.damdam.me
 echo "Kubernetes cluster name is set to $KOPS_CLUSTER_NAME"
 echo "kubernetes state store is at $KOPS_STATE_STORE"
 
-echo "===Creating kubernetes cluster using Kops==="
+echo "===Deleting existing kubernetes cluster using Kops==="
 end_message="Your cluster $KOPS_CLUSTER_NAME is ready"
 kops delete cluster --yes
+
+echo "===Creating kubernetes cluster using Kops==="
 kops create -f kops-k8s.yaml -v 4
 kops create secret --name k8s.damdam.me sshpublickey admin -i ~/.ssh/kops-aws.pub
 kops update cluster --yes
@@ -42,5 +44,8 @@ echo "Grafana initial password is $grafana_secret" | tee spree-grafana-pass.txt
 echo "Password has also been written to spree-grafana-pass.txt"
 
 echo "===Deploying spree==="
-kubectl create -f k8s/spree-deployment-ingcon.yaml
-kubectl create -f k8s/spree-ingress.yaml
+kubectl create -f k8s/spree-deployment-ingcon.yaml -n spree-app
+kubectl create -f k8s/spree-ingress.yaml -n spree-app
+
+sleep 60s
+curl --user admin:123456 'http://grafana.damdam.me/api/datasources' -X POST -H 'Content-Type: application/json;charset=UTF-8' --data-binary '{"name":"Prometheus","isDefault":true ,"type":"prometheus","url":"http://prometheus-server:9090","access":"proxy","basicAuth":false}'
