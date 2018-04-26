@@ -1,15 +1,15 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: spree-ingress
-  namespace: spree-app
+  name: grafana-ingress
+  namespace: spree-monitor
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: spree.damdam.me
+  - host: grafana.damdam.me
     http:
       paths:
       - backend:
-          serviceName: spree
-          servicePort: 3000
+          serviceName: grafana
+          servicePort: 80

@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: spree
+  namespace: apree-app
   annotations:
     external-dns.alpha.kubernetes.io/hostname: spree.damdam.me.
 spec:
@@ -26,7 +27,7 @@ metadata:
     app: spree
     ver: "1"
   name: spree
-  namespace: default
+  namespace: spree-app
   resourceVersion: "100727"
   selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/spree
   uid: ca6a84b7-418e-11e8-805a-0a2b9fafe996
