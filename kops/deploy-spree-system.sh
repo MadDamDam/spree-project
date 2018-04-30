@@ -13,8 +13,11 @@ echo "===Deploying nginx ingress controller==="
 helm install stable/nginx-ingress -f helm/nginx-values.yaml --name ingcon --namespace spree-route
 
 echo "===Deploying Heapster HPA controller==="
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/kops/master/addons/metrics-server/v1.8.x.yaml
+kubectl apply -f k8s/metrics-server-v1.8.x.yaml
 helm install stable/heapster -f helm/heapster-values.yaml --name hpacon --namespace spree-system
+
+echo "===Deploying Cluster Autoscaler==="
+kubectl apply -f k8s/cluster-autoscaler.yml
 
 echo "===Deploying Prometheus==="
 helm install stable/prometheus -f helm/prometheus-values.yaml --name prometheus --namespace spree-monitor
