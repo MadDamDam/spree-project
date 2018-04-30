@@ -27,7 +27,7 @@
       </ThreadGroup>
       <hashTree>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Search CSV" enabled="true">
-          <stringProp name="filename">/home/damdam/Opsschool/spree-project/test/jmeter/products.csv</stringProp>
+          <stringProp name="filename">/home/damdam/Opsschool/spree-project/test/load/products.csv</stringProp>
           <stringProp name="fileEncoding"></stringProp>
           <stringProp name="variableNames">searchterm</stringProp>
           <stringProp name="delimiter"></stringProp>

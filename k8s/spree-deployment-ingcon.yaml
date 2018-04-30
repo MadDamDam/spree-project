@@ -61,6 +61,12 @@ spec:
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
+        envFrom:
+        - configMapRef:
+            name: spree-env-config
+        resources:
+          requests:
+            cpu: 1000m
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

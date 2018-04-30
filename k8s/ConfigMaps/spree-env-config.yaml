@@ -1,0 +1,19 @@
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spree-env-config
+  namespace: spree-app
+data:
+  special.how: very
+  SPREE_DATABASE_URL: damdam-spree-db.cjcgajttvn7u.us-east-1.rds.amazonaws.com
+  SPREE_DATABASE_DEV: dev-rds
+  SPREE_DATABASE_PROD: prod-rds
+  SPREE_DATABASE_USER: damdam
+  SPREE_DATABASE_PASSWORD: '12345678'
+  SECRET_KEY_BASE: a1439297db90eb32fc048a1d5ca3f8df4da1e284538670b9ca94b312534a7b0c0ddec3f933d9d0aee8a0064bee207c9da39fa334b63c164ece6a72a06355d4c3
+  RAILS_ENV: development
+  AUTO_ACCEPT: '1'

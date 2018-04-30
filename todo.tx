@@ -1,0 +1,14 @@
+Env vars
+V ConfigMap
+  Secrets
+HPA
+V setup
+  use prometheus
+ASG
+Grafana datasource
+Prometheus annotations
+He	lm chart for spree
+Jenkins server automation
+Jenkins pipline
+Load test through jenkins
+ELK stack
