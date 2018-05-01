@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "===Deploying spree==="
+kubectl create -f k8s/spree-namespace.yaml
 kubectl create -f k8s/spree-deployment-ingcon.yaml
 kubectl create -f k8s/spree-ingress.yaml
 kubectl create -f k8s/spree-hpa.yaml
