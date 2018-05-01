@@ -8,7 +8,6 @@ metadata:
   name: spree-env-config
   namespace: spree-app
 data:
-  special.how: very
   SPREE_DATABASE_URL: damdam-spree-db.cjcgajttvn7u.us-east-1.rds.amazonaws.com
   SPREE_DATABASE_DEV: dev-rds
   SPREE_DATABASE_PROD: prod-rds
